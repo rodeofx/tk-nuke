@@ -95,8 +95,7 @@ class NukeEngine(tank.platform.Engine):
             
         # Store data needed for bootstrapping Tank in env vars. Used in startup/menu.py
         os.environ["TANK_NUKE_ENGINE_INIT_NAME"] = self.instance_name
-        os.environ["TANK_NUKE_ENGINE_INIT_CONTEXT"] = yaml.dump(self.context)
-        os.environ["TANK_NUKE_ENGINE_INIT_PROJECT_ROOT"] = self.tank.project_path
+        os.environ["TANK_NUKE_ENGINE_INIT_CONTEXT"] = tank.context.serialize(self.context)
         
         # add our startup path to the nuke init path
         startup_path = os.path.abspath(os.path.join( os.path.dirname(__file__), "startup"))
@@ -105,7 +104,7 @@ class NukeEngine(tank.platform.Engine):
         # we also need to pass the path to the python folder down to the init script
         # because nuke python does not have a __file__ attribute for that file
         local_python_path = os.path.abspath(os.path.join( os.path.dirname(__file__), "python"))
-        os.environ["TANK_NUKE_ENGINE_MOD_PATH"] = local_python_path
+        os.environ["TANK_NUKE_ENGINE_INIT_MOD_PATH"] = local_python_path
             
         # make sure callbacks tracking the context switching are active
         tk_nuke.tank_ensure_callbacks_registered()
